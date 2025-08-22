@@ -104,5 +104,6 @@ int		init_game(t_game *game, char **argv);
 /*utils*/
 char	*dup_no_nl(const char *s);
 char	*join_and_free(char *s1, const char *s2);
+void	free_map(t_game *game);
 
 #endif
