@@ -1,24 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   player.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jaehlee <jaehlee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/19 20:59:34 by jaehlee           #+#    #+#             */
-/*   Updated: 2025/08/19 20:59:34 by jaehlee          ###   ########.fr       */
+/*   Created: 2025/08/21 19:51:25 by jaehlee           #+#    #+#             */
+/*   Updated: 2025/08/21 19:51:25 by jaehlee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/so_long.h"
 
-int	main(int argc, char const *argv[])
+int	init_player(t_game *game)
 {
-	t_game	*game;
-
-	if (argc != 2)
-		return (0);
-	if (init_game(game, argv) == -1)
-		print_error("Init Error\n");
+	if (!game)
+		return (-1);
+	game->player.c_count = 0;
+	game->player.move_count = 0;
+	game->player.pos_x = -1;
+	game->player.pos_y = -1;
 	return (0);
+}
+
+void	draw_map(t_game *game)
+{
+	if (!game)
+		return ;
+	
 }

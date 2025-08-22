@@ -1,24 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_memchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jaehlee <jaehlee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/19 20:59:34 by jaehlee           #+#    #+#             */
-/*   Updated: 2025/08/19 20:59:34 by jaehlee          ###   ########.fr       */
+/*   Created: 2025/04/02 17:59:13 by jaehlee           #+#    #+#             */
+/*   Updated: 2025/04/02 17:59:13 by jaehlee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+#include "libft.h"
 
-#include "includes/so_long.h"
-
-int	main(int argc, char const *argv[])
+void	*ft_memchr(const void *buf, int c, size_t count)
 {
-	t_game	*game;
+	const unsigned char	*str;
+	size_t				i;
 
-	if (argc != 2)
-		return (0);
-	if (init_game(game, argv) == -1)
-		print_error("Init Error\n");
+	str = (const unsigned char *) buf;
+	i = 0;
+	while (i < count)
+	{
+		if (str[i] == (unsigned char)c)
+			return ((void *)&str[i]);
+		i++;
+	}
 	return (0);
 }

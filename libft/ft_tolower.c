@@ -1,24 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_tolower.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jaehlee <jaehlee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/19 20:59:34 by jaehlee           #+#    #+#             */
-/*   Updated: 2025/08/19 20:59:34 by jaehlee          ###   ########.fr       */
+/*   Created: 2025/04/02 17:21:56 by jaehlee           #+#    #+#             */
+/*   Updated: 2025/04/02 17:21:56 by jaehlee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+#include "libft.h"
 
-#include "includes/so_long.h"
-
-int	main(int argc, char const *argv[])
+int	ft_tolower(int c)
 {
-	t_game	*game;
-
-	if (argc != 2)
-		return (0);
-	if (init_game(game, argv) == -1)
-		print_error("Init Error\n");
-	return (0);
+	if ('A' <= c && 'Z' >= c)
+		return (c + 32);
+	return (c);
 }

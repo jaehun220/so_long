@@ -1,24 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_strmapi.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jaehlee <jaehlee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/19 20:59:34 by jaehlee           #+#    #+#             */
-/*   Updated: 2025/08/19 20:59:34 by jaehlee          ###   ########.fr       */
+/*   Created: 2025/04/08 15:11:58 by jaehlee           #+#    #+#             */
+/*   Updated: 2025/04/08 15:11:58 by jaehlee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+#include "libft.h"
 
-#include "includes/so_long.h"
-
-int	main(int argc, char const *argv[])
+char	*ft_strmapi(char const *s, char (*f)(unsigned	int, char))
 {
-	t_game	*game;
+	unsigned int	len;
+	unsigned int	index;
+	char			*result;
 
-	if (argc != 2)
+	index = 0;
+	result = 0;
+	len = (unsigned int)(ft_strlen(s));
+	result = (char *)malloc((len + 1) * sizeof(char));
+	if (!result)
 		return (0);
-	if (init_game(game, argv) == -1)
-		print_error("Init Error\n");
-	return (0);
+	while (index < len)
+	{
+		result[index] = f(index, s[index]);
+		index++;
+	}
+	result[index] = '\0';
+	return (result);
 }

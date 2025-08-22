@@ -1,24 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_memset.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jaehlee <jaehlee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/19 20:59:34 by jaehlee           #+#    #+#             */
-/*   Updated: 2025/08/19 20:59:34 by jaehlee          ###   ########.fr       */
+/*   Created: 2025/04/02 15:06:10 by jaehlee           #+#    #+#             */
+/*   Updated: 2025/04/02 15:06:10 by jaehlee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+#include "libft.h"
 
-#include "includes/so_long.h"
-
-int	main(int argc, char const *argv[])
+void	*ft_memset(void *ptr, int c, size_t n)
 {
-	t_game	*game;
+	unsigned char	*temp;
+	size_t			i;
 
-	if (argc != 2)
-		return (0);
-	if (init_game(game, argv) == -1)
-		print_error("Init Error\n");
-	return (0);
+	temp = (unsigned char *) ptr;
+	i = 0;
+	while (i < n)
+	{
+		temp[i] = (unsigned char)c;
+		i++;
+	}
+	return (temp);
 }

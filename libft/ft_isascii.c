@@ -1,24 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   isascii.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jaehlee <jaehlee@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/19 20:59:34 by jaehlee           #+#    #+#             */
-/*   Updated: 2025/08/19 20:59:34 by jaehlee          ###   ########.fr       */
+/*   Created: 2025/04/02 14:49:07 by jaehlee           #+#    #+#             */
+/*   Updated: 2025/04/02 14:49:07 by jaehlee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+#include "libft.h"
 
-#include "includes/so_long.h"
-
-int	main(int argc, char const *argv[])
+int	ft_isascii(int c)
 {
-	t_game	*game;
-
-	if (argc != 2)
-		return (0);
-	if (init_game(game, argv) == -1)
-		print_error("Init Error\n");
+	if (c >= 0 && c <= 127)
+		return (1);
 	return (0);
 }
