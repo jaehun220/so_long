@@ -32,13 +32,13 @@
 # define KEY_DOWN	65364
 # define KEY_RIGHT	65363
 # define PRESS_EXIT	17
-# define IMG_CAT	"../imgs/cat.xpm"
-# define IMG_BOX_CAT "../imgs/box_cat.xpm"
-# define CLOSE_DOOR	"../imgs/close_door.xpm"
-# define OPEN_DOOR	"../imgs/open_door.xpm"
-# define FISH	"../imgs/fish.xpm"
-# define TILE	"../imgs/tile.xpm"
-# define WALL	"../imgs/wall.xpm"
+# define IMG_CAT	"imgs/cat.xpm"
+# define IMG_BOX_CAT "imgs/box_cat.xpm"
+# define CLOSE_DOOR	"imgs/close_door.xpm"
+# define OPEN_DOOR	"imgs/open_door.xpm"
+# define FISH	"imgs/fish.xpm"
+# define TILE	"imgs/tile.xpm"
+# define WALL	"imgs/wall.xpm"
 
 typedef struct s_map
 {
@@ -91,9 +91,11 @@ void	init_images(t_game *game);
 void	destroy_images(t_game *game);
 
 /*map*/
+void	fill_map_rows(t_game *game, char *map_str);
 int		init_map(t_game *game);
-void	make_map(t_game *game);
+void	make_map(t_game *game, char *map_str);
 int		exit_game(t_game *game);
+char	*map_read(t_game *game);
 
 /*player*/
 int		init_player(t_game *game);
@@ -105,5 +107,6 @@ int		init_game(t_game *game, char **argv);
 char	*dup_no_nl(const char *s);
 char	*join_and_free(char *s1, const char *s2);
 void	free_map(t_game *game);
+void	print_error(char *str);
 
 #endif

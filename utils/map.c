@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "includes/so_long.h"
+#include "../includes/so_long.h"
 
 int	init_map(t_game *game)
 {
@@ -25,17 +25,6 @@ int	init_map(t_game *game)
 	game->map.p_start_x = -1;
 	game->map.p_start_y = -1;
 	return (0);
-}
-
-static void	read_lines_and_join(t_game *game, char *line, char **map_str)
-{
-	while (line)
-	{
-		game->map.height++;
-		*map_str = join_and_free(*map_str, line);
-		free(line);
-		line = get_next_line(game->fd);
-	}
 }
 
 static char	*read_and_join_lines(t_game *game, char *map_str)
@@ -85,6 +74,34 @@ char	*map_read(t_game *game)
 	map_str = read_and_join_lines(game, map_str);
 	close(game->fd);
 	return (map_str);
+}
+
+void	fill_map_rows(t_game *game, char *map_str)
+{
+	int	i;
+	int	j;
+	int	k;
+
+	i = 0;
+	k = 0;
+	while (i < game->map.height)
+	{
+		game->map.map[i] = (char *)malloc(sizeof(char) * (game->map.width + 1));
+		if (!game->map.map[i])
+		{
+			free_map(game);
+			free(map_str);
+			print_error("Map row allocation failed");
+		}
+		j = 0;
+		while (j < game->map.width)
+		{
+			game->map.map[i][j] = map_str[k++];
+			j++;
+		}
+		game->map.map[i][game->map.width] = '\0';
+		i++;
+	}
 }
 
 void	make_map(t_game *game, char *map_str)

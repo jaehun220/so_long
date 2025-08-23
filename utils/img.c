@@ -12,14 +12,14 @@
 
 #include "../includes/so_long.h"
 
-static void	img_error_exit(const char *path)
+static void	img_error_exit(char *path)
 {
 	ft_putstr_fd("Error\nFailed to load image: ", 2);
 	ft_putendl_fd((char *)path, 2);
 	exit(1);
 }
 
-static t_img	init_img(t_game *game, const char *path)
+static t_img	init_img(t_game *game, char *path)
 {
 	t_img	img;
 
@@ -39,7 +39,7 @@ static t_img	init_img(t_game *game, const char *path)
 void	init_images(t_game *game)
 {
 	if (!game)
-		return (-1);
+		return ;
 	game->cat_img = init_img(game, IMG_CAT);
 	game->box_cat_img = init_img(game, IMG_BOX_CAT);
 	game->close_door = init_img(game, CLOSE_DOOR);
@@ -47,7 +47,6 @@ void	init_images(t_game *game)
 	game->fish = init_img(game, FISH);
 	game->tile = init_img(game, TILE);
 	game->wall = init_img(game, WALL);
-	return (0);
 }
 
 void	destroy_images(t_game *game)

@@ -10,15 +10,24 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "includes/so_long.h"
+#include "../includes/so_long.h"
 
-int	main(int argc, char const *argv[])
+int	main(int argc, char *argv[])
 {
 	t_game	*game;
 
 	if (argc != 2)
 		return (0);
+	game = malloc(sizeof(t_game));
+	if (!game)
+		print_error("Malloc Error");
 	if (init_game(game, argv) == -1)
+	{
+		free(game);
 		print_error("Init Error\n");
+	}
+	make_map(game, map_read(game));
+	game->win = mlx_new_window(game->mlx, 500, 500, "mlx_project");
+	mlx_loop(game->mlx);
 	return (0);
 }
