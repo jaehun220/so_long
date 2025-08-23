@@ -12,17 +12,17 @@
 
 #include "../includes/so_long.h"
 
-void	free_map(t_game *game)
+void	*free_rows(char **rows, int until)
 {
 	int	i;
 
-	if (!game || !game->map.map)
-		return ;
+	if (!rows)
+		return (NULL);
 	i = 0;
-	while (i < game->map.height)
-		free(game->map.map[i++]);
-	free(game->map.map);
-	game->map.map = NULL;
+	while (i < until)
+		free(rows[i++]);
+	free(rows);
+	return (NULL);
 }
 
 void	print_error(char *str)
@@ -38,9 +38,9 @@ char	*dup_no_nl(const char *s)
 	if (!s)
 		return (NULL);
 	len = ft_strlen(s);
-	if (len && s[len - 1] == '\n')
-		return (ft_substr(s, 0, (unsigned int)(len - 1)));
-	return (ft_strdup(s));
+	while (len > 0 && (s[len - 1] == '\n' || s[len - 1] == '\r'))
+		len--;
+	return (ft_substr(s, 0, (unsigned int)len));
 }
 
 char	*join_and_free(char *s1, const char *s2)

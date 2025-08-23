@@ -17,12 +17,13 @@ CFLAGS = -Wall -Wextra -Werror -g
 INCLUDES = -I includes -I mlx -I libft -I get_next_line
 
 SRCS = src/main.c \
-        utils/game.c \
         utils/img.c \
         utils/map.c \
         utils/player.c \
-        utils/utils.c
-        #utils/move.c \#
+        utils/utils.c \
+		utils/init.c \
+		utils/game.c \
+		#utils/move.c \#
 
 
 OBJS = $(SRCS:%.c=%.o)

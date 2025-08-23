@@ -12,109 +12,89 @@
 
 #include "../includes/so_long.h"
 
-int	init_map(t_game *game)
+static char	*join_and_free(char *s1, const char *s2)
 {
-	if (!game)
-		return (-1);
-	game->map.map = NULL;
-	game->map.c_count = 0;
-	game->map.e_count = 0;
-	game->map.p_count = 0;
-	game->map.height = 0;
-	game->map.width = 0;
-	game->map.p_start_x = -1;
-	game->map.p_start_y = -1;
-	return (0);
+	char	*res;
+
+	if (!s1 && !s2)
+		return (NULL);
+	if (!s1)
+		return (ft_strdup(s2));
+	if (!s2)
+		return (s1);
+	res = ft_strjoin(s1, s2);
+	free(s1);
+	return (res);
 }
 
-static char	*read_and_join_lines(t_game *game, char *map_str)
+static int	consume_line(t_game *g, const char *raw, char **acc)
 {
-	char	*line;
-	int		current_width;
+	char	*ln;
+	int		w;
 
-	while (1)
-	{
-		line = get_next_line(game->fd);
-		if (!line)
-			break ;
-		current_width = ft_strlen(line);
-		if (current_width > 0 && line[current_width - 1] == '\n')
-			current_width--;
-		if (game->map.width != current_width)
-		{
-			free(map_str);
-			free(line);
-			close(game->fd);
-			return (NULL);
-		}
-		map_str = join_and_free(map_str, line);
-		free(line);
-		game->map.height++;
-	}
-	return (map_str);
+	ln = dup_no_nl(raw);
+	if (!ln)
+		return (-1);
+	w = (int)ft_strlen(ln);
+	if (g->map.width < 0)
+		g->map.width = w;
+	else if (w != g->map.width)
+		return (free(ln), -1);
+	*acc = join_and_free(*acc, ln);
+	free(ln);
+	if (!*acc)
+		return (-1);
+	g->map.height++;
+	return (0);
 }
 
 char	*map_read(t_game *game)
 {
-	char	*line;
-	char	*map_str;
+	char	*raw;
+	char	*acc;
 
-	line = get_next_line(game->fd);
-	if (!line)
-	{
-		close(game->fd);
+	if (!game || game->fd < 0)
 		return (NULL);
-	}
-	game->map.width = ft_strlen(line);
-	if (game->map.width > 0 && line[game->map.width - 1] == '\n')
-		game->map.width--;
-	map_str = dup_no_nl(line);
-	free(line);
-	game->map.height = 1;
-	map_str = read_and_join_lines(game, map_str);
-	close(game->fd);
-	return (map_str);
-}
-
-void	fill_map_rows(t_game *game, char *map_str)
-{
-	int	i;
-	int	j;
-	int	k;
-
-	i = 0;
-	k = 0;
-	while (i < game->map.height)
+	game->map.width = -1;
+	game->map.height = 0;
+	acc = NULL;
+	raw = get_next_line(game->fd);
+	while (raw)
 	{
-		game->map.map[i] = (char *)malloc(sizeof(char) * (game->map.width + 1));
-		if (!game->map.map[i])
-		{
-			free_map(game);
-			free(map_str);
-			print_error("Map row allocation failed");
-		}
-		j = 0;
-		while (j < game->map.width)
-		{
-			game->map.map[i][j] = map_str[k++];
-			j++;
-		}
-		game->map.map[i][game->map.width] = '\0';
-		i++;
+		if (consume_line(game, raw, &acc) != 0)
+			return (free(raw), free(acc), NULL);
+		free(raw);
+		raw = get_next_line(game->fd);
 	}
+	if (game->map.width <= 0 || game->map.height <= 0)
+		return (free(acc), NULL);
+	if (ft_strlen(acc) != (game->map.width * game->map.height))
+		return (free(acc), NULL);
+	return (acc);
 }
 
-void	make_map(t_game *game, char *map_str)
+void	make_map(t_game *g, char *s)
 {
-	if (!map_str)
+	size_t	off;
+	int		y;
+
+	if (!g || !s || g->map.width <= 0 || g->map.height <= 0)
 		return ;
-	game->map.map = (char **)malloc(sizeof(char *) * (game->map.height + 1));
-	if (!game->map.map)
+	g->map.map = (char **)malloc(sizeof(char *) * (g->map.height + 1));
+	if (!g->map.map)
+		return ;
+	y = 0;
+	off = 0;
+	while (y < g->map.height)
 	{
-		free(map_str);
-		print_error("Map allocation failed");
+		g->map.map[y] = (char *)malloc((size_t)g->map.width + 1);
+		if (!g->map.map[y])
+			return ((void)free_rows(g->map.map, y), free(s));
+		ft_memcpy(g->map.map[y], s + off, (size_t)g->map.width);
+		g->map.map[y][g->map.width] = '\0';
+		off += (size_t)g->map.width;
+		y++;
 	}
-	game->map.map[game->map.height] = NULL;
-	fill_map_rows(game, map_str);
-	free(map_str);
+	g->map.map[y] = NULL;
+	free(s);
 }

@@ -19,7 +19,7 @@ static void	img_error_exit(char *path)
 	exit(1);
 }
 
-static t_img	init_img(t_game *game, char *path)
+t_img	init_img(t_game *game, char *path)
 {
 	t_img	img;
 
@@ -36,17 +36,43 @@ static t_img	init_img(t_game *game, char *path)
 	return (img);
 }
 
-void	init_images(t_game *game)
+void	set_img(t_game *game, t_img img, int x_pos, int y_pos)
 {
+	void	*mlx;
+	void	*win;
+
 	if (!game)
-		return ;
-	game->cat_img = init_img(game, IMG_CAT);
-	game->box_cat_img = init_img(game, IMG_BOX_CAT);
-	game->close_door = init_img(game, CLOSE_DOOR);
-	game->open_door = init_img(game, OPEN_DOOR);
-	game->fish = init_img(game, FISH);
-	game->tile = init_img(game, TILE);
-	game->wall = init_img(game, WALL);
+		print_error("Game Invaliable");
+	mlx = game->mlx;
+	win = game->win;
+	mlx_put_image_to_window(mlx, win, img.img_ptr, x_pos * 64, y_pos * 64);
+}
+
+void	setting_img(t_game *game)
+{
+	int	height;
+	int	width;
+
+	height = 0;
+	while (height < game->map.height)
+	{
+		width = 0;
+		while (width < game->map.width)
+		{
+			if (game->map.map[height][width] == '1')
+				set_img(game, game->wall, width, height);
+			else if (game->map.map[height][width] == 'C')
+				set_img(game, game->fish, width, height);
+			else if (game->map.map[height][width] == 'P')
+				set_img(game, game->box_cat_img, width, height);
+			else if (game->map.map[height][width] == 'E')
+				set_img(game, game->close_door, width, height);
+			else
+				set_img(game, game->tile, width, height);
+			width++;
+		}
+		height++;
+	}
 }
 
 void	destroy_images(t_game *game)

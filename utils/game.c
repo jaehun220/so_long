@@ -12,48 +12,13 @@
 
 #include "../includes/so_long.h"
 
-static char	*path_maker(char *filename)
-{	
-	char	*path;
-	int		len;
-	int		i;
-
-	len = ft_strlen(filename);
-	path = (char *)malloc(sizeof(char) * (len + 5));
-	if (!path)
-		return (NULL);
-	path[0] = 'm';
-	path[1] = 'a';
-	path[2] = 'p';
-	path[3] = '/';
-	i = 0;
-	while (i < len)
-	{
-		path[4 + i] = filename[i];
-		i++;
-	}
-	path[4 + i] = '\0';
-	return (path);
-}
-
-int	init_game(t_game *game, char **argv)
+void	make_win(t_game *game)
 {
-	char	*path;
+	int	width;
+	int	height;
 
-	if (!game)
-		return (-1);
-	path = path_maker(argv[1]);
-	if (!path)
-		return (-1);
-	game->fd = open(path, O_RDONLY);
-	free(path);
-	if (game->fd <= 0)
-		return (-1);
-	ft_bzero(game, sizeof(t_game));
-	init_map(game);
-	init_player(game);
-	init_images(game);
-	game->mlx = mlx_init();
-	game->win = NULL;
-	return (0);
+	width = game->map.width * TILE_SIZE;
+	height = game->map.height * TILE_SIZE;
+	game->win = mlx_new_window(game->mlx, width, height, "so_long");
 }
+

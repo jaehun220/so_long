@@ -27,7 +27,8 @@ int	main(int argc, char *argv[])
 		print_error("Init Error\n");
 	}
 	make_map(game, map_read(game));
-	game->win = mlx_new_window(game->mlx, 500, 500, "mlx_project");
+	make_win(game);
+	setting_img(game);
 	mlx_loop(game->mlx);
 	return (0);
 }
