@@ -27,6 +27,24 @@ int	init_map(t_game *game)
 	return (0);
 }
 
+
+t_img	init_img(t_game *game, char *path)
+{
+	t_img	img;
+
+	img.img_ptr = NULL;
+	img.path = (char *)path;
+	img.width = 0;
+	img.height = 0;
+	if (!game || !game->mlx || !path)
+		print_error("img Error");
+	img.img_ptr = mlx_xpm_file_to_image(game->mlx, path,
+			&img.width, &img.height);
+	if (!img.img_ptr)
+		print_error("img Error");
+	return (img);
+}
+
 int	init_images(t_game *game)
 {
 	if (!game)
@@ -49,6 +67,7 @@ int	init_player(t_game *game)
 	game->player.move_count = 0;
 	game->player.pos_x = -1;
 	game->player.pos_y = -1;
+	game->player.on_exit = 0;
 	return (0);
 }
 

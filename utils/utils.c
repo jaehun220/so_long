@@ -57,3 +57,19 @@ char	*join_and_free(char *s1, const char *s2)
 	free(s1);
 	return (res);
 }
+
+void	dfs_path(t_game *game, int x, int y)
+{
+	if (x < 0 || y < 0 || x >= game->map.width || y >= game->map.height
+		|| game->map.dfs_map[y][x] == '1' || game->map.dfs_map[y][x] == 'V')
+		return ;
+	if (game->map.dfs_map[y][x] == 'C')
+		game->map.collected++;
+	if (game->map.dfs_map[y][x] == 'E')
+		game->map.exit_found = 1;
+	game->map.dfs_map[y][x] = 'V';
+	dfs_path(game, x + 1, y);
+	dfs_path(game, x - 1, y);
+	dfs_path(game, x, y + 1);
+	dfs_path(game, x, y - 1);
+}

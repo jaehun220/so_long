@@ -19,11 +19,11 @@ INCLUDES = -I includes -I mlx -I libft -I get_next_line
 SRCS = src/main.c \
         utils/img.c \
         utils/map.c \
-        utils/player.c \
+		utils/map1.c \
         utils/utils.c \
 		utils/init.c \
 		utils/game.c \
-		#utils/move.c \#
+		utils/move.c \
 
 
 OBJS = $(SRCS:%.c=%.o)

@@ -73,28 +73,28 @@ char	*map_read(t_game *game)
 	return (acc);
 }
 
-void	make_map(t_game *g, char *s)
+void	make_map(t_game *game, char *s)
 {
 	size_t	off;
 	int		y;
 
-	if (!g || !s || g->map.width <= 0 || g->map.height <= 0)
+	if (!game || !s || game->map.width <= 0 || game->map.height <= 0)
 		return ;
-	g->map.map = (char **)malloc(sizeof(char *) * (g->map.height + 1));
-	if (!g->map.map)
+	game->map.map = (char **)malloc(sizeof(char *) * (game->map.height + 1));
+	if (!game->map.map)
 		return ;
 	y = 0;
 	off = 0;
-	while (y < g->map.height)
+	while (y < game->map.height)
 	{
-		g->map.map[y] = (char *)malloc((size_t)g->map.width + 1);
-		if (!g->map.map[y])
-			return ((void)free_rows(g->map.map, y), free(s));
-		ft_memcpy(g->map.map[y], s + off, (size_t)g->map.width);
-		g->map.map[y][g->map.width] = '\0';
-		off += (size_t)g->map.width;
+		game->map.map[y] = (char *)malloc((size_t)game->map.width + 1);
+		if (!game->map.map[y])
+			return ((void)free_rows(game->map.map, y), free(s));
+		ft_memcpy(game->map.map[y], s + off, (size_t)game->map.width);
+		game->map.map[y][game->map.width] = '\0';
+		off += (size_t)game->map.width;
 		y++;
 	}
-	g->map.map[y] = NULL;
+	game->map.map[y] = NULL;
 	free(s);
 }

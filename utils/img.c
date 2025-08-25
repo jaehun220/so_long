@@ -12,31 +12,7 @@
 
 #include "../includes/so_long.h"
 
-static void	img_error_exit(char *path)
-{
-	ft_putstr_fd("Error\nFailed to load image: ", 2);
-	ft_putendl_fd((char *)path, 2);
-	exit(1);
-}
-
-t_img	init_img(t_game *game, char *path)
-{
-	t_img	img;
-
-	img.img_ptr = NULL;
-	img.path = (char *)path;
-	img.width = 0;
-	img.height = 0;
-	if (!game || !game->mlx || !path)
-		img_error_exit(path);
-	img.img_ptr = mlx_xpm_file_to_image(game->mlx, path,
-			&img.width, &img.height);
-	if (!img.img_ptr)
-		img_error_exit(path);
-	return (img);
-}
-
-void	set_img(t_game *game, t_img img, int x_pos, int y_pos)
+static void	set_img(t_game *game, t_img img, int x_pos, int y_pos)
 {
 	void	*mlx;
 	void	*win;
@@ -48,49 +24,56 @@ void	set_img(t_game *game, t_img img, int x_pos, int y_pos)
 	mlx_put_image_to_window(mlx, win, img.img_ptr, x_pos * 64, y_pos * 64);
 }
 
-void	setting_img(t_game *game)
+static void	draw_door(t_game *game, int x, int y)
 {
-	int	height;
-	int	width;
-
-	height = 0;
-	while (height < game->map.height)
-	{
-		width = 0;
-		while (width < game->map.width)
-		{
-			if (game->map.map[height][width] == '1')
-				set_img(game, game->wall, width, height);
-			else if (game->map.map[height][width] == 'C')
-				set_img(game, game->fish, width, height);
-			else if (game->map.map[height][width] == 'P')
-				set_img(game, game->box_cat_img, width, height);
-			else if (game->map.map[height][width] == 'E')
-				set_img(game, game->close_door, width, height);
-			else
-				set_img(game, game->tile, width, height);
-			width++;
-		}
-		height++;
-	}
+	if (game->map.c_count == 0)
+		set_img(game, game->open_door, x, y);
+	else
+		set_img(game, game->close_door, x, y);
 }
 
-void	destroy_images(t_game *game)
+static void	draw_player(t_game *game, int x, int y)
 {
-	if (!game || !game->mlx)
+	if (game->player.move_count == 0)
+		set_img(game, game->box_cat_img, x, y);
+	else
+		set_img(game, game->cat_img, x, y);
+}
+
+static void	draw_cell(t_game *game, int x, int y)
+{
+	char	t;
+
+	t = game->map.map[y][x];
+	if (t == '1')
+		set_img(game, game->wall, x, y);
+	else if (t == '0')
+		set_img(game, game->tile, x, y);	
+	else if (t == 'C')
+		set_img(game, game->fish, x, y);
+	else if (t == 'P')
+		draw_player(game, x, y);
+	else if (t == 'E')
+		draw_door(game, x, y);
+}
+
+void	setting_img(t_game *game)
+{
+	int	x;
+	int	y;
+
+	if (!game || !game->mlx || !game->win)
 		return ;
-	if (game->cat_img.img_ptr)
-		mlx_destroy_image(game->mlx, game->cat_img.img_ptr);
-	if (game->box_cat_img.img_ptr)
-		mlx_destroy_image(game->mlx, game->box_cat_img.img_ptr);
-	if (game->close_door.img_ptr)
-		mlx_destroy_image(game->mlx, game->close_door.img_ptr);
-	if (game->open_door.img_ptr)
-		mlx_destroy_image(game->mlx, game->open_door.img_ptr);
-	if (game->fish.img_ptr)
-		mlx_destroy_image(game->mlx, game->fish.img_ptr);
-	if (game->tile.img_ptr)
-		mlx_destroy_image(game->mlx, game->tile.img_ptr);
-	if (game->wall.img_ptr)
-		mlx_destroy_image(game->mlx, game->wall.img_ptr);
+	mlx_clear_window(game->mlx, game->win);
+	y = 0;
+	while (y < game->map.height)
+	{
+		x = 0;
+		while (x < game->map.width)
+		{
+			draw_cell(game, x, y);
+			x++;
+		}
+		y++;
+	}
 }

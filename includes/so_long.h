@@ -44,6 +44,9 @@ typedef struct s_map
 	int		c_count;
 	int		e_count;
 	int		p_count;
+	char	**dfs_map;
+	int		collected;
+	int		exit_found;
 }	t_map;
 
 typedef struct s_player
@@ -52,6 +55,7 @@ typedef struct s_player
 	int	pos_y;
 	int	c_count;
 	int	move_count;
+	int	on_exit;
 }	t_player;
 
 typedef struct s_img
@@ -84,19 +88,25 @@ int		key_press(int keycode, t_game *game);
 char	*dup_no_nl(const char *s);
 void	*free_rows(char **rows, int until);
 void	print_error(char *str);
+void	dfs_path(t_game *game, int x, int y);
 
 /*img*/
-int		init_images(t_game *game);
 void	destroy_images(t_game *game);
 t_img	init_img(t_game *game, char *path);
+int		init_images(t_game *game);
 void	setting_img(t_game *game);
 
 /*map*/
 void	fill_map_rows(t_game *game, char *map_str);
 int		init_map(t_game *game);
 void	make_map(t_game *g, char *s);
-int		exit_game(t_game *game);
 char	*map_read(t_game *game);
+int		map_check(t_game *game);
+
+/*move*/
+void	handle_move(int keycode, t_game *game);
+int		is_walkable(int x, int y, t_game *g);
+void	move_player(int x, int y, t_game *g);
 
 /*player*/
 int		init_player(t_game *game);
@@ -104,7 +114,8 @@ int		init_player(t_game *game);
 /*game*/
 int		init_game(t_game *game, char **argv);
 void	make_win(t_game *game);
-
-
+int		exit_game(t_game *game);
+int		key_press(int keycode, t_game *game);
+int		key_press(int keycode, t_game *game);
 
 #endif
